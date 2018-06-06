@@ -5,3 +5,31 @@ apt-get update
 apt-get install puppetmaster(for master node)
 apt-get install puppet(for agent node)
 puppet -V
+
+ISUUE:1
+
+Puppet fails to perform tasks which rely on Augeas.  The default Ruby version in Cumulus Linux is 1.9.1, but the version of libaugeas-ruby on the Cumulus 2.5 repository is version 1.8.
+
+The following errors occur:
+
+
+Package libaugeas-ruby1.9.1 is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+
+E: Package 'libaugeas-ruby1.9.1' has no installation candidate
+
+Package augeas-tools is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+
+E: Package 'augeas-tools' has no installation candidate
+
+solution:1
+
+cumulus@switch$ echo "deb http://ftp.us.debian.org/debian/ wheezy main contrib non-free" | sudo tee /etc/apt/sources.list.d/debian_stable.list
+
+cumulus@switch$ sudo apt-get update
+
+cumulus@switch$ sudo apt-get install libaugeas-ruby1.9.1 augeas-tools
+
